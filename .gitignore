@@ -30,3 +30,7 @@
 *.exe
 *.out
 *.app
+
+#sqlite3 dependencies
+src/database/sqlite3.h
+include/lib/sqlite3.c
