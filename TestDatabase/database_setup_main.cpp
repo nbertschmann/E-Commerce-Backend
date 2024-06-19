@@ -2,6 +2,9 @@
 #include <fstream>
 #include <sstream>
 #include <sqlite3.h> 
+#include <string>
+#include "sql_utils.h"
+#include "db_utils.h"
 
 static int callback(void *NotUsed, int argc, char **argv, char **azColName) 
 {
@@ -13,24 +16,7 @@ static int callback(void *NotUsed, int argc, char **argv, char **azColName)
    return 0;
 }
 
-void execute_sql_commands(sqlite3* db, const char* sql_commands) {
-    char* zErrMsg = 0;
-    int rc = sqlite3_exec(db, sql_commands, callback, 0, &zErrMsg);
 
-    if (rc != SQLITE_OK) {
-        std::cerr << "SQL error: " << zErrMsg << '\n';
-        sqlite3_free(zErrMsg);
-    } else {
-        std::cout << "Tables created successfully" << std::endl;
-    }
-}
-
-std::string read_sql_file(const char* file_path){
-    std::ifstream file(file_path);
-    std::stringstream buffer;
-    buffer << file.rdbuf();
-    return buffer.str();
-}
 
 int main(int argc, char* argv[])
 {
@@ -51,9 +37,7 @@ int main(int argc, char* argv[])
         std::cout << "Opened database successfully" << std::endl;
     }
 
-    std::string sql_commands = read_sql_file("database_setup.sql");
-
-    execute_sql_commands(db, sql_commands.c_str());
+    execute_sql_commands(db, db_path);
 
     sqlite3_close(db);
 }
