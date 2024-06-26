@@ -1,3 +1,6 @@
+#ifndef SQL_UTILS_H
+#define SQL_UTILS_H
+
 #include <iostream>
 #include <fstream>
 #include <sstream>
@@ -8,3 +11,5 @@ std::string read_sql_file(const char* file_path){
     buffer << file.rdbuf();
     return buffer.str();
 }
+
+#endif

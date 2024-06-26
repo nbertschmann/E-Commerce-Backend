@@ -5,7 +5,7 @@ project(database_setup)
 add_subdirectory(../lib/sqlite ${CMAKE_BINARY_DIR}/sqlite)
 
 # Add the executable for database setup
-add_executable(database_setup database_setup.cpp)
+add_executable(database_setup database_setup_main.cpp)
 
 # Link the sqlite3 library
 target_link_libraries(database_setup PRIVATE sqlite3)

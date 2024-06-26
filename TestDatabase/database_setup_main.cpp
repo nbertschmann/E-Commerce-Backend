@@ -6,18 +6,6 @@
 #include "sql_utils.h"
 #include "db_utils.h"
 
-static int callback(void *NotUsed, int argc, char **argv, char **azColName) 
-{
-   int i;
-   for(i = 0; i<argc; i++) {
-      printf("%s = %s\n", azColName[i], argv[i] ? argv[i] : "NULL");
-   }
-   printf("\n");
-   return 0;
-}
-
-
-
 int main(int argc, char* argv[])
 {
     sqlite3* db;
@@ -37,7 +25,11 @@ int main(int argc, char* argv[])
         std::cout << "Opened database successfully" << std::endl;
     }
 
-    execute_sql_commands(db, db_path);
+    std::string table_setup_command = read_sql_file("database_setup.sql");
+    execute_sql_commands(db, db_path, table_setup_command);
+
+    std::string table_populate_command = read_sql_file("database_populate_tables.sql");
+    execute_sql_commands(db, db_path, table_populate_command);
 
     sqlite3_close(db);
 }
