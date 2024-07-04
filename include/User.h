@@ -1,3 +1,6 @@
+#ifndef USER_H
+#define USER_H
+
 #include <string>
 
 class User{
@@ -11,3 +14,5 @@ class User{
         std::string password;
         std::string email;
 };
+
+#endif
