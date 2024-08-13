@@ -6,7 +6,6 @@ class Database : public DatabaseInterface {
     public:
         Database(const char* file_name);
         ~Database();
-        std::vector<User> loadUsers() override;
         std::vector<Product> loadProducts() override;
         std::vector<Product> loadUserCart(int user_id) override;
         void addToCart(Product product, int user_id) override;
