@@ -7,22 +7,21 @@ class Product{
     public:
         Product(int Product_ID, std::string Name, double Price, int Stock_Qty) : product_id(Product_ID), product_name(Name), price(Price), stock_qty(Stock_Qty) {}
 
-        int getProductID(){
+        int getProductID() const {
             return product_id;
         }
 
-        std::string getProductName(){
+        std::string getProductName() const {
             return product_name;
         }
 
-        double getPrice(){
+        double getPrice() const {
             return price;
         }
 
-        int getStockQty(){
+        int getStockQty() const {
             return stock_qty;
         }
-
 
     private:
         int product_id;

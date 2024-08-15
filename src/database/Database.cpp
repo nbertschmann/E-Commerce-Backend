@@ -1,10 +1,11 @@
 #include "Database.h"
+#include "Product.h"
+#include "User.h"
+#include "Item.h"
 #include <stdio.h>
 #include <sqlite3.h>
 #include <vector>
 #include <iostream>
-#include "Product.h"
-#include "User.h"
 #include <fstream>
 #include <string>
 #include <filesystem>
@@ -87,11 +88,11 @@ std::vector<Product> Database::loadProducts() {
     return product_list;
 }
 
-std::vector<Product> Database::loadUserCart(int user_id) {
+std::vector<Item> Database::loadUserCart(int user_id) {
     
-    std::vector<Product> user_cart;
+    std::vector<Item> user_cart;
 
-    const char* sql_command = "SELECT pi.PRODUCT_ID, pi.product_name, pi.price, pi.stock_quantity "
+    const char* sql_command = "SELECT pi.PRODUCT_ID, pi.product_name, pi.price, pi.stock_quantity, ci.quantity "
                               "FROM USER_CART uc "
                               "JOIN CART_ITEMS ci ON uc.CART_ID = ci.fk_cart_id "
                               "JOIN PRODUCT_INFORMATION pi ON pi.PRODUCT_ID = ci.fk_product_id "
@@ -113,10 +114,12 @@ std::vector<Product> Database::loadUserCart(int user_id) {
         std::string product_name(reinterpret_cast<const char*>(product_name_char));
         double price = sqlite3_column_double(query1.get_stmt(), 2);
         int stock_quantity = sqlite3_column_int(query1.get_stmt(), 3);
+        int cart_quantity = sqlite3_column_int(query1.get_stmt(), 4);
         
         Product product(product_id, product_name, price, stock_quantity);
+        Item cart_item(product, cart_quantity);
 
-        user_cart.push_back(product);
+        user_cart.push_back(cart_item);
     }
 
     return user_cart;
@@ -240,5 +243,18 @@ std::string Database::fetchPassword(std::string username){
     else{
         return "";
     }
+}
 
+void Database::executeQuery(const char* sql_query){
+    
+    PrepareStatement stmt_query(sql_query, database);
+
+    int rc = sqlite3_step(stmt_query.get_stmt());
+    if (rc != SQLITE_DONE) {
+        throw std::runtime_error(sqlite3_errmsg(database));
+    }
+    else{
+        std::string query_str(sql_query);
+        std::cout << "Executed Statement Successfully: " + query_str << std::endl;
+    }
 }
