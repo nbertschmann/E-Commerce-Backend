@@ -10,13 +10,13 @@ class Database : public DatabaseInterface {
         ~Database();
         std::vector<Product> loadProducts() override;
         std::vector<Item> loadUserCart(int user_id) override;
-        void addToCart(Product product, int user_id) override;
+        void addToCart(int product_id, int user_id) override;
         void removeFromCart(int user_id, int product_id) override;
-        std::string fetchPassword(std::string user_id) override;
+        std::string fetchPassword(std::string username) override;
         
         // Method to execute arbitrary SQL queries.
         void executeQuery(const char* query);
     private:
-        sqlite3 *database;
+        sqlite3* database;
         bool fileExists(const char* fileName);
 };

@@ -15,7 +15,7 @@ class Product{
             return product_name;
         }
 
-        double getPrice() const {
+        double getProductPrice() const {
             return price;
         }
 
