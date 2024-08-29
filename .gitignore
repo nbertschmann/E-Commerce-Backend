@@ -2,3 +2,6 @@ TestDatabase/data/test_database.db
 TestDatabase/build
 .vscode
 BasicDatabaseTests
+build
+tests/test_utils.h
+lib/googletest-1.14.0
